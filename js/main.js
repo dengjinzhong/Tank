@@ -13,6 +13,7 @@ var prop = null;
 var enemyArray = [];//敌方坦克
 var bulletArray = [];//子弹数组
 var keys = [];//记录按下的按键
+var clicks = [];
 var crackArray = [];//爆炸数组
 
 var gameState = GAME_STATE_MENU;//默认菜单状态
@@ -29,7 +30,47 @@ var homeProtectedTime = -1;
 var propTime = 300;
 
 $(document).ready(function(){
-	
+	$('.button').mouseup( function(e) {
+		var className = e.target.classList[0];
+		clicks.remove(className);
+	})
+	$('.button').mousedown( function(e) {
+		var className = e.target.classList[0];
+		switch(gameState){
+		case GAME_STATE_MENU:
+			if(className == 'contentA'){
+				gameState = GAME_STATE_INIT;
+				//只有一个玩家
+				if(menu.playNum == 1){
+					player2.lives = 0;
+				}
+			}else{
+				var n = 0;
+				if(className == "bottom"){
+					n = 1;
+				}else if(className == "top"){
+					n = -1;
+				}
+				menu.next(n);
+			}
+			break;
+		case GAME_STATE_START:
+			if(!clicks.contain(className)){
+				clicks.push(className);
+			}
+			//射击
+			if(className == "contentA" && player1.lives > 0){
+				player1.shoot(BULLET_TYPE_PLAYER);
+			}else if(className == "contentA" && player2.lives > 0){
+				player2.shoot(BULLET_TYPE_ENEMY);
+			}else if(className == "contentN"){
+				nextLevel();
+			}else if(className == "contentP"){
+				preLevel();
+			}
+			break;
+		}	
+	})
 	initScreen();
 	initObject();
 	
@@ -153,6 +194,8 @@ $(document).keydown(function(e){
 	}
 });
 
+
+
 $(document).keyup(function(e){
 	keys.remove(e.keyCode);
 });
@@ -197,6 +240,24 @@ function keyEvent(){
 		player1.hit = false;
 		player1.move();
 	}else if(keys.contain(keyboard.D)){
+		player1.dir = RIGHT;
+		player1.hit = false;
+		player1.move();
+	}
+	
+	if(clicks.contain('top')){
+		player1.dir = UP;
+		player1.hit = false;
+		player1.move();
+	}else if(clicks.contain("bottom")){
+		player1.dir = DOWN;
+		player1.hit = false;
+		player1.move();
+	}else if(clicks.contain("left")){
+		player1.dir = LEFT;
+		player1.hit = false;
+		player1.move();
+	}else if(clicks.contain("right")){
 		player1.dir = RIGHT;
 		player1.hit = false;
 		player1.move();

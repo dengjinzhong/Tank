@@ -78,6 +78,15 @@ function initObject() {
 	var map = new Map(wallCtx, grassCtx);
 	map.setMapLevel(level);
 	map.draw();
+	var player1 = new PlayTank(tankCtx);
+	player1.x = 129 + map.offsetX;
+	player1.y = 385 + map.offsetY;
+	player1.draw();
+	player2 = new PlayTank(tankCtx);
+	player2.offsetX = 128; //player2的图片x与图片1相距128
+	player2.x = 256 + map.offsetX;
+	player2.y = 385 + map.offsetY;
+	player2.draw();
 }
 
 function gameLoop() {
@@ -87,36 +96,36 @@ function gameLoop() {
 			break;
 	}
 }
-
-$(document).keydown(function(e) {
-	switch(gameState) {
-		case GAME_STATE_MENU: 
-		    if(e.keyCode === keyboard.ENTER) {
-				gameState = GAME_STATE_INIT;
-				//只有一个玩家
-				if(menu.playNum === 1) {
-					
-				}
-			}else {
-				var n = 0;
-				if(e.keyCode === keyboard.DOWN) {
-					n = 1;
-				}else if (e.keyCode === keyboard.UP) {
-					n = -1;
-				}
-				menu.next(n);
-			}
-			break;
-// 		case GAME_STATE_START:
-// 		    if(!keys.contain(e.keyCode)) {
-// 				key.push(e.keyCode);
+// 
+// $(document).keydown(function(e) {
+// 	switch(gameState) {
+// 		case GAME_STATE_MENU: 
+// 		    if(e.keyCode === keyboard.ENTER) {
+// 				gameState = GAME_STATE_INIT;
+// 				//只有一个玩家
+// 				if(menu.playNum === 1) {
+// 					
+// 				}
+// 			}else {
+// 				var n = 0;
+// 				if(e.keyCode === keyboard.DOWN) {
+// 					n = 1;
+// 				}else if (e.keyCode === keyboard.UP) {
+// 					n = -1;
+// 				}
+// 				menu.next(n);
 // 			}
-// 			//射击
-// 			if(e.keyCode === keyboard.SPACE && player1.lives > 0) {
-// 				
-// 			}
-	}
-})
+// 			break;
+// // 		case GAME_STATE_START:
+// // 		    if(!keys.contain(e.keyCode)) {
+// // 				key.push(e.keyCode);
+// // 			}
+// // 			//射击
+// // 			if(e.keyCode === keyboard.SPACE && player1.lives > 0) {
+// // 				
+// // 			}
+// 	}
+// })
 
 
 function initMap() {

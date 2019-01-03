@@ -35,3 +35,67 @@ var SelectTank = function() {
 }
 
 SelectTank.prototype = new Tank();
+
+/**
+ * 玩家坦克
+ * @param context 画坦克的画布
+ * @returns
+ */
+var PlayTank = function(context){
+	this.ctx = context;
+	this.lives = 3; //生命值
+	this.isProtected = true;  //是否受保护
+	this.protectedTime = 500; //保护时间
+	this.offsetX = 0; //坦克2与坦克1的距离
+	this.speed = 2; //坦克的速度
+	
+	this.draw = function() {
+		this.hit = false;
+		this.ctx.drawImage(
+			RESOURCE_IMAGE,
+			POS["player"][0]+this.offsetX+this.dir*this.size,POS["player"][1],
+			this.size,this.size,
+			this.x,this.y,
+			this.size,this.size
+		)
+		if(this.isProtected){
+			var temp = parseInt((500-this.protectedTime)/5)%2;
+			this.ctx.drawImage(
+				RESOURCE_IMAGE,
+				POS["protected"][0],POS["protected"][1]+32*temp,
+				32, 32,
+				this.x,this.y,
+				32, 32
+			);
+			this.protectedTime--;
+			if(this.protectedTime == 0){
+				this.isProtected = false;
+			}
+		}
+	}
+	
+	this.distroy = function(){
+		this.isDestroyed = true;
+		crackArray.push(new CrackAnimation(CRACK_TYPE_TANK,this.ctx,this));
+		PLAYER_DESTROY_AUDIO.play();
+	};
+	
+	this.renascenc = function(player){
+		this.lives -- ;
+		this.dir = UP;
+		this.isProtected = true;
+		this.protectedTime = 500;
+		this.isDestroyed = false;
+		var temp= 0 ;
+		if(player == 1){
+			temp = 129;
+		}else{
+			temp = 256;
+		}
+		this.x = temp + map.offsetX;
+		this.y = 385 + map.offsetY;
+	};
+	
+}
+
+PlayTank.prototype = new Tank();

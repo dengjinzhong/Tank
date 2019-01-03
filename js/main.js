@@ -117,7 +117,6 @@ function gameLoop(){
 }
 
 $(document).keydown(function(e){
-	console.log(gameState);
 	switch(gameState){
 	case GAME_STATE_MENU:
 		if(e.keyCode == keyboard.ENTER){

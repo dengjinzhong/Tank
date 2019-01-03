@@ -246,7 +246,6 @@ var EnemyOne = function(context){
 		this.times ++;
 		if(!this.isAppear){
 			var temp = parseInt(this.times/5)%7;
-			console.log(POS["enemyBefore"][0]+temp*32,POS["enemyBefore"][1]);
 			this.ctx.drawImage(RESOURCE_IMAGE,POS["enemyBefore"][0]+temp*32,POS["enemyBefore"][1],32,32,this.x,this.y,32,32);
 			if(this.times == 34){
 				this.isAppear = true;
